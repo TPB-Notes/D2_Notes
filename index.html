@@ -1,1 +1,333 @@
-# D2_Notes
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision 2 Notes</title>
+<link rel="stylesheet" href="https://stackedit.io/res-min/themes/base.css" />
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body><div class="container"><h1 id="decision-2-notes">Decision 2 Notes</h1>
+
+
+
+<h2 id="critical-path-analysis">Critical path analysis</h2>
+
+
+
+<h3 id="activity-networks">Activity networks</h3>
+
+<p>The general aim of an activity network is to determine the minimum time in which a project can be completed and to optimise the use of resources in achieving this minimum completion time.</p>
+
+<p>When constructing an activity network, it is conventional to let the arcs of the network represent the activities. The nodes are drawn as circles to leave space for numbers.</p>
+
+<p>The network should be drawn such that preceding activities are all shown to the left of the given activity. <br>
+The activity name is written along with a number indicating the duration or cost of the activity.</p>
+
+<ol>
+<li>Draw a circle to represent the start of all those activities that have no immediate predecessors</li>
+<li>From the most recently drawn circles draw the start of arcs directed from left to right to represent the activities starting from those circles</li>
+<li>To the right of any previous drawing, draw circles to represent the start of all those activities for which all immediate predecessors have already been drawn. Two activities which have precisely the same immediate predecessors can share a start circle</li>
+<li>Join all loose arcs to relevant right hand circles, introducing dummy activities as necessary</li>
+<li>Repeat steps 2, 3, and 4 until all activities have been considered</li>
+<li>Join all loose arcs to a circle at the right hand side of the diagram, to represent the finish</li>
+</ol>
+
+
+
+<h4 id="earliest-and-latest-start-times">Earliest and latest start times</h4>
+
+<p>The earliest time after the start of a project that an activity can be started is called the earliest start time.</p>
+
+<p>The earliest start times are calculated by performing a forward pass, starting from the left.</p>
+
+<ol>
+<li>Label the initial node with earliest start time 0</li>
+<li>Choose any node, <script type="math/tex" id="MathJax-Element-8209">X</script>, such that all nodes to its left have already been given an early time</li>
+<li>Consider all activities leading into <script type="math/tex" id="MathJax-Element-8210">X</script>, and the nodes from which they come. Label <script type="math/tex" id="MathJax-Element-8211">X</script> with an earliest start time equal to the maximum value of the earliest start time of the preceding node plus the duration of the preceding activity for all these activities</li>
+<li>If all nodes have been labelled then stop. Otherwise, return to step 2</li>
+</ol>
+
+<p>The latest start time for a node is the latest that activities to the left can finish and not delay the completion of the project. <br>
+Once the earliest start times have been determined, the latest start times can be found by performing a reverse pass from the right to the left.</p>
+
+<ol>
+<li>Label the final node with a latest start time equal to its earliest start time</li>
+<li>Choose any node, <script type="math/tex" id="MathJax-Element-8212">X</script>, such that all nodes to its right have already been given a latest start time</li>
+<li>Consider all activities leading out of <script type="math/tex" id="MathJax-Element-8213">X</script>. Label <script type="math/tex" id="MathJax-Element-8214">X</script> with a late time equal to the least value of the latest start time of the following node minus the duration of the following activity for all these activities</li>
+<li>If all nodes have been labelled then stop. Otherwise, return to step 2</li>
+</ol>
+
+<h3 id="critical-paths">Critical paths</h3>
+
+<p><strong>Critical activity</strong>  <br>
+Critical activities are such that they connect two nodes where both nodes have the same earliest start times and latest start times <br>
+Their duration is the difference between the labels of their left and right nodes <br>
+A critical activity has no scheduling flexibility</p>
+
+<p><strong>Critical path</strong> A path of critical activities leading from the start node to the final node</p>
+
+
+
+<h3 id="cascade-diagrams">Cascade diagrams</h3>
+
+<p>Once the earliest start times and latest end times have been calculated, a cascade chart provides a method of displaying information in a way which is easy to understand.</p>
+
+<p>It is convention to place an activity at its earliest possible start time, and use dashed lines to display the possible range.</p>
+
+
+
+<h3 id="resource-leveling">Resource leveling</h3>
+
+
+
+<h4 id="resource-histogram">Resource histogram</h4>
+
+<p>A resource histogram is a cascade diagram with the resources required for each activity on the y axis. <br>
+The diagram can then be collapsed to show the histogram.</p>
+
+<p>From the histogram, resource use can be optimised by levelling out the histogram.</p>
+
+
+
+<h2 id="allocation">Allocation</h2>
+
+<p><strong>Assignment problem</strong> Finding a maximum weight matching or minimum weight perfect matching in a weighted bipartite graph</p>
+
+
+
+<h3 id="the-hungarian-algorithm">The Hungarian algorithm</h3>
+
+<ol>
+<li>Reduce the array of costs by both row and column subtraction. This is subtracting the smallest value from every value in each row and column</li>
+<li>Cover the zero elements with the minimum number of lines. If this minimum number is the same as the size of the array, go to step 4.</li>
+<li>Let <script type="math/tex" id="MathJax-Element-8216">m</script> be the minimum uncovered element. Augment the array by reducing all uncovered elements by m and increasing all elements covered by two lines by <script type="math/tex" id="MathJax-Element-8217">m</script>. Return to step 2.</li>
+<li>There is a maximal matching using only zeros. Apply this pattern to the original array.</li>
+</ol>
+
+<h4 id="dealing-with-non-square-matrices">Dealing with non square matrices</h4>
+
+<p>Suppose that there are <script type="math/tex" id="MathJax-Element-8219">n + 1</script> workers available for <script type="math/tex" id="MathJax-Element-8220">n</script> tasks.  <br>
+To be able to apply the Hungarian algorithm to this problem, a dummy column must be added. <br>
+The dummy column should be filled with the largest value in the array. <br>
+Dummy rows can also be created in this manner.</p>
+
+<h2 id="dynamic-programming">Dynamic programming</h2>
+
+<p><strong>States</strong> Nodes are called states</p>
+
+<p><strong>Actions</strong> Arcs are called actions. an action transforms a situation from one state to another</p>
+
+<p><strong>Costs</strong> The weight on an arc is called the cost</p>
+
+
+
+<h3 id="minimising-and-maximising-problems">Minimising and maximising problems</h3>
+
+<p>A general strategy can be used to solve optimisation problems. The principle of this strategy is to work backwards through the decisions, at each stage working out the best strategy from that point.</p>
+
+<p><strong>Sub-optimal strategy</strong> The best strategy from each point is called the sub-optimal strategy</p>
+
+
+
+<h3 id="maximin-and-minimax-problems">Maximin and minimax problems</h3>
+
+<p><strong>Maximin</strong> A problem where the objective is to maximise the minimum value</p>
+
+<p><strong>Minimax</strong> A problem where the objective is to minimise the maximum value</p>
+
+
+
+<h3 id="negative-edge-lengths">Negative edge lengths</h3>
+
+
+
+<h3 id="production-planning">Production planning</h3>
+
+
+
+<h3 id="minimum-and-maximum-paths">Minimum and maximum paths</h3>
+
+
+
+<h2 id="network-flows">Network flows</h2>
+
+<p><strong>Source</strong> The start of a network</p>
+
+<p><strong>Sink</strong> The end of a network</p>
+
+<p><strong>Capacity</strong> The weight on an arc</p>
+
+<p><strong>Saturated</strong> An arc is said to be saturated if the flow through it is equal to its capacity</p>
+
+<p><strong>Cut</strong> A continuous line which separates the source from the sink. A cut must not pass through any nodes</p>
+
+
+
+<h3 id="maximum-flow-minimum-cut-theorem">Maximum flow minimum cut theorem</h3>
+
+<p>Any cut across a network can be thought of as a collection of potential bottlenecks which restrict the flow through the network.</p>
+
+<p>By dividing the source and the sink, it is easy to see that the value of any possible flow is less than or equal to the value of any particular cut.</p>
+
+<p>In particular, the maximum possible flow is less than or equal to the value of the minimum cut</p>
+
+
+
+<h4 id="statement">Statement</h4>
+
+<p>The flow through a network cannot exceed the value of any cut.</p>
+
+<p>The maximum flow equals the value of the minimum cut.</p>
+
+
+
+<h4 id="usage">Usage</h4>
+
+<p>If a flow and cut with the same value can be found, the theorem tells you that you have obtained the maximum flow.</p>
+
+
+
+<h3 id="labelling-procedure-for-flow-augmentation">Labelling procedure for flow augmentation</h3>
+
+<ol>
+<li>Begin with any initial flow, or zero flow</li>
+<li>Replace each arc with two arcs, the forward arc showing excess capacity, and the backwards arc showing potential backflow (The current flow)</li>
+<li>If the source is still connected to the sink, find a new flow and alter the excess capacities and potential backflows as necessary</li>
+<li>Repeat step 3 until the source is disconnected from the sink. If the source is disconnected from the sink, then the maximum flow is the sum of all the flows of steps 1 and 3</li>
+</ol>
+
+<p>The maximum flow can also be determined by tracing the flow.</p>
+
+
+
+<h3 id="super-sources-and-sinks">Super sources and sinks</h3>
+
+<p>Some problems may have multiple sources or sinks. <br>
+These problems can be solved by combining the sources and sinks into super sources and super sinks respectively.</p>
+
+<p>In order to apply the labelling procedure, create the super source which feeds the existing sources with capacity sufficiently large so as not to affect the solution. Create a super sink in the same manner.</p>
+
+<p>The maximum flow through the network can then be found by removing the super sources and sinks once the process is complete.</p>
+
+
+
+<h3 id="restricted-capacity">Restricted capacity</h3>
+
+<p><strong>Restricted capacity</strong> If a node has restricted capacity, there is a limit to the flow which can pass through it</p>
+
+<p>In order to solve a problem involving restricted capacity, the restricted node must be represented by two unrestricted nodes, with an arc between of the same capacity as the restricted node.</p>
+
+<p>If a node has multiple entrances, each of them must flow through the first unrestricted node.</p>
+
+
+
+<h3 id="minimum-capacities">Minimum capacities</h3>
+
+<p><strong>Minimum capacity</strong> An arc with a minimum is required to have a minimum flow through it</p>
+
+<p>It is convention to label each directed arc with two numbers, an upper capacity and a lower capacity.</p>
+
+<p>For such a network the value of a cut is defined as follows</p>
+
+<blockquote>
+  <p>The value of a cut is the sum of the upper capacities for arcs that cross the cut line in the direction from the source to the sink minus the sum of the lower capacities for arcs that cross the cut line in the direction from the sink to the source</p>
+</blockquote>
+
+
+
+<h2 id="linear-programming">Linear programming</h2>
+
+
+
+<h3 id="the-simplex-method">The Simplex method</h3>
+
+
+
+<h3 id="the-simplex-tableau">The Simplex tableau</h3>
+
+
+
+<h2 id="game-theory-for-zero-sum-games">Game theory for zero sum games</h2>
+
+
+
+<h3 id="zero-sum-games">Zero sum games</h3>
+
+<p>A zero sum game is such that for any move in the game, the gain for one party is exactly equal to the loss to the other.</p>
+
+
+
+<h3 id="pay-off-matrix">Pay off matrix</h3>
+
+<p>A pay off matrix is a rectangular array of numbers representing the outcomes of each possible pair of decisions. The outcomes are the pay offs to the player whose choices are on the left side of the matrix.</p>
+
+
+
+<h3 id="play-safe-strategies">Play safe strategies</h3>
+
+<p>A play safe strategy is to choose the option whose word outcome is as good as possible</p>
+
+<p>Method</p>
+
+<ul>
+<li>Add an extra column of the worst values from each row (The worst outcomes for the player on the left)</li>
+<li>Add an extra row of the worst values from each column (The worst outcomes for the player on the right)</li>
+</ul>
+
+
+
+<h4 id="stable-solutions">Stable solutions</h4>
+
+<p>If the maximum of the row minima is equal to the minimum of the column maxima then there is a stable solution. <br>
+If a game has a stable solution, then both players should adopt a play sage strategy and the pay off from these strategies is called the value of the game.</p>
+
+
+
+<h3 id="dominance">Dominance</h3>
+
+<p>A row of a pay off matrix can be ignored if each element is less than or equal to the corresponding element of another row. <br>
+A column of a pay off matrix can be ignored if each element is greater than or equal to the corresponding element of another column,</p>
+
+
+
+<h3 id="mixed-strategies">Mixed strategies</h3>
+
+<p>You can only be certain that a play safe strategy is the best for a player when a game has a stable solution. <br>
+Rather than settling on a single option, a player has some likelihood of choosing any of the options.</p>
+
+<p>Example</p>
+
+<blockquote>
+  <p>Suppose A adopts a mixed strategy of sometimes choosing option 1, and sometimes choosing option 2. Let <script type="math/tex" id="MathJax-Element-8324">p</script> be the probability of choosing option 1; the probability of choosing option 2 is then <script type="math/tex" id="MathJax-Element-8325">1 - p</script></p>
+  
+  <p>We then consider each of the options which B may choose <br>
+   If A gains <script type="math/tex" id="MathJax-Element-8326">W</script> with probability <script type="math/tex" id="MathJax-Element-8327">p</script> and gains <script type="math/tex" id="MathJax-Element-8328">X</script> with probability <script type="math/tex" id="MathJax-Element-8329">1 - p</script> the expected payoff is <br>
+   <script type="math/tex" id="MathJax-Element-8330">Wp + X(1-p)</script></p>
+  
+  <p>If instead B chooses option 2 <br>
+     If A gains <script type="math/tex" id="MathJax-Element-8331">Y</script> with probability <script type="math/tex" id="MathJax-Element-8332">p</script> and <script type="math/tex" id="MathJax-Element-8333">Z</script> with probability <script type="math/tex" id="MathJax-Element-8334">1 - p</script> the expected payoff is <br>
+     <script type="math/tex" id="MathJax-Element-8335">Yp + Z(1-p)</script></p>
+  
+  <p>These two lines can be represented on a graph <br>
+   The intersection of these two lines provides the optimal solution</p>
+</blockquote>
+
+<h3 id="2-times-n-games"><script type="math/tex" id="MathJax-Element-8460">2 \times n</script> games</h3>
+
+<p>The method above can be extended to <script type="math/tex" id="MathJax-Element-8461">2\times n</script> games, which have <script type="math/tex" id="MathJax-Element-8462">2</script> rows and <script type="math/tex" id="MathJax-Element-8463">n</script> columns. <br>
+For each column there is a line on the graph. <br>
+The optimal value is at the lowest intersection on the graph</p>
+
+<p>To solve a <script type="math/tex" id="MathJax-Element-8464">2 \times n</script> game between A and B</p>
+
+<ol>
+<li>Assign probabilities of <script type="math/tex" id="MathJax-Element-8465">p</script> and <script type="math/tex" id="MathJax-Element-8466">1 - p</script> to the two options for A</li>
+<li>Plot A’s expected pay off under each of B’s options as lines on a graph of pay off against <script type="math/tex" id="MathJax-Element-8467">p</script></li>
+<li>Shade the region which is below every line</li>
+<li>Find the value of <script type="math/tex" id="MathJax-Element-8468">p</script> at the highest point of the shaded region</li>
+<li>Use this value of <script type="math/tex" id="MathJax-Element-8469">p</script> to find the value, <script type="math/tex" id="MathJax-Element-8470">V</script>, of the game</li>
+<li>Assign probability <script type="math/tex" id="MathJax-Element-8471">q</script> to one of those options for B which determine the highest point of the shaded region</li>
+<li>Find the value of <script type="math/tex" id="MathJax-Element-8472">q</script> which gives B an expected pay off of <script type="math/tex" id="MathJax-Element-8473">-V</script> under either of A’s options</li>
+</ol></div></body>
+</html>
