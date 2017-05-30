@@ -17,9 +17,7 @@
 
 <h3 id="activity-networks">Activity networks</h3>
 
-<p>The general aim of an activity network is to determine the minimum time in which a project can be completed and to optimise the use of resources in achieving this minimum completion time.</p>
-
-<p>When constructing an activity network, it is conventional to let the arcs of the network represent the activities. The nodes are drawn as circles to leave space for numbers.</p>
+<p>The aim of an activity network is to determine the minimum value, in time or resources, with which a project can be completed.</p>
 
 <p>The network should be drawn such that preceding activities are all shown to the left of the given activity. <br>
 The activity name is written along with a number indicating the duration or cost of the activity.</p>
@@ -33,8 +31,6 @@ The activity name is written along with a number indicating the duration or cost
 <li>Join all loose arcs to a circle at the right hand side of the diagram, to represent the finish</li>
 </ol>
 
-
-
 <h4 id="earliest-and-latest-start-times">Earliest and latest start times</h4>
 
 <p>The earliest time after the start of a project that an activity can be started is called the earliest start time.</p>
@@ -43,8 +39,8 @@ The activity name is written along with a number indicating the duration or cost
 
 <ol>
 <li>Label the initial node with earliest start time 0</li>
-<li>Choose any node, <script type="math/tex" id="MathJax-Element-8209">X</script>, such that all nodes to its left have already been given an early time</li>
-<li>Consider all activities leading into <script type="math/tex" id="MathJax-Element-8210">X</script>, and the nodes from which they come. Label <script type="math/tex" id="MathJax-Element-8211">X</script> with an earliest start time equal to the maximum value of the earliest start time of the preceding node plus the duration of the preceding activity for all these activities</li>
+<li>Choose any node, <script type="math/tex" id="MathJax-Element-1">X</script>, such that all nodes to its left have already been given an early time</li>
+<li>Consider all activities leading into <script type="math/tex" id="MathJax-Element-2">X</script>, and the nodes from which they come. Label <script type="math/tex" id="MathJax-Element-3">X</script> with an earliest start time equal to the maximum value of the earliest start time of the preceding node plus the duration of the preceding activity for all these activities</li>
 <li>If all nodes have been labelled then stop. Otherwise, return to step 2</li>
 </ol>
 
@@ -53,10 +49,12 @@ Once the earliest start times have been determined, the latest start times can b
 
 <ol>
 <li>Label the final node with a latest start time equal to its earliest start time</li>
-<li>Choose any node, <script type="math/tex" id="MathJax-Element-8212">X</script>, such that all nodes to its right have already been given a latest start time</li>
-<li>Consider all activities leading out of <script type="math/tex" id="MathJax-Element-8213">X</script>. Label <script type="math/tex" id="MathJax-Element-8214">X</script> with a late time equal to the least value of the latest start time of the following node minus the duration of the following activity for all these activities</li>
+<li>Choose any node, <script type="math/tex" id="MathJax-Element-4">X</script>, such that all nodes to its right have already been given a latest start time</li>
+<li>Consider all activities leading out of <script type="math/tex" id="MathJax-Element-5">X</script>. Label <script type="math/tex" id="MathJax-Element-6">X</script> with a late time equal to the least value of the latest start time of the following node minus the duration of the following activity for all these activities</li>
 <li>If all nodes have been labelled then stop. Otherwise, return to step 2</li>
 </ol>
+
+
 
 <h3 id="critical-paths">Critical paths</h3>
 
@@ -67,7 +65,9 @@ A critical activity has no scheduling flexibility</p>
 
 <p><strong>Critical path</strong> A path of critical activities leading from the start node to the final node</p>
 
+<p><strong>Float</strong> The amount of time by which an activity can be delayed or extended</p>
 
+<p><strong>Independent float</strong> A float which does not affect other activities</p>
 
 <h3 id="cascade-diagrams">Cascade diagrams</h3>
 
@@ -75,60 +75,41 @@ A critical activity has no scheduling flexibility</p>
 
 <p>It is convention to place an activity at its earliest possible start time, and use dashed lines to display the possible range.</p>
 
+<h4 id="resource-leveling">Resource leveling</h4>
 
+<p>The smoothing out of the usage of resources is called resource levelling.</p>
 
-<h3 id="resource-leveling">Resource leveling</h3>
+<p>Draw the cascade chart, starting with any critical paths along the bottom. <br>
+Then insert other activities to produce a chart of minimum height.</p>
 
-
-
-<h4 id="resource-histogram">Resource histogram</h4>
-
-<p>A resource histogram is a cascade diagram with the resources required for each activity on the y axis. <br>
-The diagram can then be collapsed to show the histogram.</p>
-
-<p>From the histogram, resource use can be optimised by levelling out the histogram.</p>
-
-
-
-<h2 id="allocation">Allocation</h2>
+<h2 id="allocation-with-the-hungarian-algorithm">Allocation with the Hungarian algorithm</h2>
 
 <p><strong>Assignment problem</strong> Finding a maximum weight matching or minimum weight perfect matching in a weighted bipartite graph</p>
 
+<p>If the matrix is not a square, add a dummy row or column filled with values which are equal to the maximum value in the matrix.</p>
 
-
-<h3 id="the-hungarian-algorithm">The Hungarian algorithm</h3>
+<p>If the objective is to establish a maximal matching, subtract each of the values from the maximum value in the matrix.</p>
 
 <ol>
 <li>Reduce the array of costs by both row and column subtraction. This is subtracting the smallest value from every value in each row and column</li>
 <li>Cover the zero elements with the minimum number of lines. If this minimum number is the same as the size of the array, go to step 4.</li>
-<li>Let <script type="math/tex" id="MathJax-Element-8216">m</script> be the minimum uncovered element. Augment the array by reducing all uncovered elements by m and increasing all elements covered by two lines by <script type="math/tex" id="MathJax-Element-8217">m</script>. Return to step 2.</li>
+<li>Let <script type="math/tex" id="MathJax-Element-432">m</script> be the minimum uncovered element. Augment the array by reducing all uncovered elements by m and increasing all elements covered by two lines by <script type="math/tex" id="MathJax-Element-433">m</script>. Return to step 2.</li>
 <li>There is a maximal matching using only zeros. Apply this pattern to the original array.</li>
 </ol>
-
-<h4 id="dealing-with-non-square-matrices">Dealing with non square matrices</h4>
-
-<p>Suppose that there are <script type="math/tex" id="MathJax-Element-8219">n + 1</script> workers available for <script type="math/tex" id="MathJax-Element-8220">n</script> tasks.  <br>
-To be able to apply the Hungarian algorithm to this problem, a dummy column must be added. <br>
-The dummy column should be filled with the largest value in the array. <br>
-Dummy rows can also be created in this manner.</p>
 
 <h2 id="dynamic-programming">Dynamic programming</h2>
 
 <p><strong>States</strong> Nodes are called states</p>
 
+<p><strong>Stage</strong> The transition from states with a stage variable <script type="math/tex" id="MathJax-Element-819">k</script> to those with <script type="math/tex" id="MathJax-Element-820">k-1</script> is called stage <script type="math/tex" id="MathJax-Element-821">k</script></p>
+
 <p><strong>Actions</strong> Arcs are called actions. an action transforms a situation from one state to another</p>
 
 <p><strong>Costs</strong> The weight on an arc is called the cost</p>
 
-
-
-<h3 id="minimising-and-maximising-problems">Minimising and maximising problems</h3>
-
 <p>A general strategy can be used to solve optimisation problems. The principle of this strategy is to work backwards through the decisions, at each stage working out the best strategy from that point.</p>
 
 <p><strong>Sub-optimal strategy</strong> The best strategy from each point is called the sub-optimal strategy</p>
-
-
 
 <h3 id="maximin-and-minimax-problems">Maximin and minimax problems</h3>
 
@@ -138,17 +119,430 @@ Dummy rows can also be created in this manner.</p>
 
 
 
+<h4 id="minimum">Minimum</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Stage</th>
+  <th>State</th>
+  <th>From</th>
+  <th>Calculation</th>
+  <th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>1</td>
+  <td>I</td>
+  <td>K</td>
+  <td>12</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td></td>
+  <td>J</td>
+  <td>K</td>
+  <td>14</td>
+  <td>14</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>G</td>
+  <td>I</td>
+  <td>15 + 12</td>
+  <td>27</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>15 + 14</td>
+  <td>(28)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>H</td>
+  <td>I</td>
+  <td>12 + 13</td>
+  <td>25</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>14 + 12</td>
+  <td>(26)</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>D</td>
+  <td>G</td>
+  <td>27 + 5</td>
+  <td>32</td>
+</tr>
+<tr>
+  <td></td>
+  <td>E</td>
+  <td>G</td>
+  <td>27 + 9</td>
+  <td>36</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>H</td>
+  <td>25 + 12</td>
+  <td>(37)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>F</td>
+  <td>H</td>
+  <td>25 + 13</td>
+  <td>38</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>B</td>
+  <td>D</td>
+  <td>32 + 4</td>
+  <td>36</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>E</td>
+  <td>36 + 4</td>
+  <td>40</td>
+</tr>
+<tr>
+  <td></td>
+  <td>C</td>
+  <td>E</td>
+  <td>36 + 9</td>
+  <td>(45)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>F</td>
+  <td>38 + 6</td>
+  <td>44</td>
+</tr>
+<tr>
+  <td>5</td>
+  <td>A</td>
+  <td>B</td>
+  <td>36 + 8</td>
+  <td>44</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>B</td>
+  <td>30 + 8</td>
+  <td>(48)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>A</td>
+  <td>C</td>
+  <td>44 + 4</td>
+  <td>48</td>
+</tr>
+</tbody></table>
+
+
+<p>To find the minimum we keep track of the total for each path. <br>
+The largest value from each set is removed. E.g. there is no reason to pass through G from J as it can be reach faster from I, and there is no reason to pass through E from H as it can be reached faster from G.</p>
+
+<h4 id="maximum">Maximum</h4>
+
+<p>To find the maximum from above we would eliminate the smaller values instead.</p>
+
+<h4 id="maximin">Maximin</h4>
+
+<table>
+<thead>
+<tr>
+  <th>Stage</th>
+  <th>State</th>
+  <th>From</th>
+  <th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>1</td>
+  <td>H</td>
+  <td>K</td>
+  <td>18</td>
+</tr>
+<tr>
+  <td></td>
+  <td>I</td>
+  <td>K</td>
+  <td>15</td>
+</tr>
+<tr>
+  <td></td>
+  <td>J</td>
+  <td>K</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>E</td>
+  <td>H</td>
+  <td>(17)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>I</td>
+  <td>15</td>
+</tr>
+<tr>
+  <td></td>
+  <td>F</td>
+  <td>H</td>
+  <td>(15)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>I</td>
+  <td>14</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td></td>
+  <td>G</td>
+  <td>I</td>
+  <td>(14)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>B</td>
+  <td>E</td>
+  <td>11</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>F</td>
+  <td>(13)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>C</td>
+  <td>E</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>F</td>
+  <td>13</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>G</td>
+  <td>(14)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>D</td>
+  <td>F</td>
+  <td>(15)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>G</td>
+  <td>14</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>A</td>
+  <td>B</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>C</td>
+  <td>(14)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>D</td>
+  <td>13</td>
+</tr>
+</tbody></table>
+
+
+<p>ACGIK</p>
+
+<p>In each case the highest value in getting to the new state is selected. <br>
+When tracing back we move from A to C (14), from C to G (14), G to I (14), and finally I to K (15). <br>
+The minimum value is 14.</p>
+
+<h4 id="minimax">Minimax</h4>
+
+<p>For each stage from each node, choose the minimum value.</p>
+
+<table>
+<thead>
+<tr>
+  <th>Stage</th>
+  <th>State</th>
+  <th>From</th>
+  <th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>1</td>
+  <td>H</td>
+  <td>K</td>
+  <td>2.7</td>
+</tr>
+<tr>
+  <td></td>
+  <td>I</td>
+  <td>K</td>
+  <td>2.3</td>
+</tr>
+<tr>
+  <td></td>
+  <td>J</td>
+  <td>K</td>
+  <td>2.5</td>
+</tr>
+<tr>
+  <td>2</td>
+  <td>E</td>
+  <td>H</td>
+  <td>2.7</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>I</td>
+  <td>(2.4)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>F</td>
+  <td>H</td>
+  <td>2.7</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>I</td>
+  <td>2.6</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>(2.5)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>G</td>
+  <td>I</td>
+  <td>(2.6)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>J</td>
+  <td>2.9</td>
+</tr>
+<tr>
+  <td>3</td>
+  <td>B</td>
+  <td>E</td>
+  <td>2.8</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>F</td>
+  <td>(2.7)</td>
+</tr>
+<tr>
+  <td></td>
+  <td>C</td>
+  <td>E</td>
+  <td>2.8</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>F</td>
+  <td>(2.5)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>G</td>
+  <td>2.6</td>
+</tr>
+<tr>
+  <td></td>
+  <td>D</td>
+  <td>F</td>
+  <td>2.8</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>G</td>
+  <td>(2.6)</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>A</td>
+  <td>B</td>
+  <td>2.7</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>C</td>
+  <td>(2.5)</td>
+</tr>
+<tr>
+  <td></td>
+  <td></td>
+  <td>D</td>
+  <td>2.7</td>
+</tr>
+</tbody></table>
+
+
+<p>Now move backwards, picking the starred lowest values.</p>
+
+<p>From A to C with 2.5, then C to F with 2.5, then F to J with 2.5, then J to K with 2.5.</p>
+
+<p>ACFJK</p>
+
 <h3 id="negative-edge-lengths">Negative edge lengths</h3>
-
-
-
-<h3 id="production-planning">Production planning</h3>
-
-
-
-<h3 id="minimum-and-maximum-paths">Minimum and maximum paths</h3>
-
-
 
 <h2 id="network-flows">Network flows</h2>
 
@@ -166,27 +560,9 @@ Dummy rows can also be created in this manner.</p>
 
 <h3 id="maximum-flow-minimum-cut-theorem">Maximum flow minimum cut theorem</h3>
 
-<p>Any cut across a network can be thought of as a collection of potential bottlenecks which restrict the flow through the network.</p>
+<p>The maximum flow is less than or equal to the value of the minimum cut.</p>
 
-<p>By dividing the source and the sink, it is easy to see that the value of any possible flow is less than or equal to the value of any particular cut.</p>
-
-<p>In particular, the maximum possible flow is less than or equal to the value of the minimum cut</p>
-
-
-
-<h4 id="statement">Statement</h4>
-
-<p>The flow through a network cannot exceed the value of any cut.</p>
-
-<p>The maximum flow equals the value of the minimum cut.</p>
-
-
-
-<h4 id="usage">Usage</h4>
-
-<p>If a flow and cut with the same value can be found, the theorem tells you that you have obtained the maximum flow.</p>
-
-
+<p>If a flow and cut with the same value can be found, the maximum flow has been found.</p>
 
 <h3 id="labelling-procedure-for-flow-augmentation">Labelling procedure for flow augmentation</h3>
 
@@ -242,47 +618,113 @@ These problems can be solved by combining the sources and sinks into super sourc
 
 <h3 id="the-simplex-method">The Simplex method</h3>
 
+<p>The simplex algorithm simultaneously solves the equations of the constraints to find the nodes. It then works out whether that node maximises the objective function.</p>
 
 
-<h3 id="the-simplex-tableau">The Simplex tableau</h3>
+
+<h4 id="slack-variables">Slack variables</h4>
+
+<p>Slack variables are used in order to remove inequalities from each equation.</p>
 
 
+
+<h4 id="the-tableau">The tableau</h4>
+
+<p>The top row of the tableau is the objective function. <br>
+There is one row for each further equation.</p>
+
+<p>Suppose we have <script type="math/tex" id="MathJax-Element-713">x + 2y \leq 6 \to x + 2y + s = 6</script> and <script type="math/tex" id="MathJax-Element-714">x + y \leq 5 \to x + y + t = 5</script> the tableau would be:</p>
+
+<table>
+<thead>
+<tr>
+  <th><script type="math/tex" id="MathJax-Element-715">P</script></th>
+  <th><script type="math/tex" id="MathJax-Element-716">x</script></th>
+  <th><script type="math/tex" id="MathJax-Element-717">y</script></th>
+  <th><script type="math/tex" id="MathJax-Element-718">s</script></th>
+  <th><script type="math/tex" id="MathJax-Element-719">t</script></th>
+  <th>Value</th>
+  <th>Equation</th>
+</tr>
+</thead>
+<tbody><tr>
+  <td>1</td>
+  <td>-2</td>
+  <td>-1</td>
+  <td>0</td>
+  <td>0</td>
+  <td>0</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td>0</td>
+  <td>1</td>
+  <td>2</td>
+  <td>1</td>
+  <td>0</td>
+  <td>6</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td>0</td>
+  <td>1</td>
+  <td>1</td>
+  <td>0</td>
+  <td>1</td>
+  <td>5</td>
+  <td>3</td>
+</tr>
+</tbody></table>
+
+
+
+
+<h4 id="method">Method</h4>
+
+<p>Once the tableau has been created, choose any column which has a negative number in the top row. <br>
+The aim is now to manipulate the equations to eliminate this variable from the other equations.</p>
+
+<p>To do this a pivot value is chosen. The pivot is the value in the selected column which has not already been a pivot and provides the smallest value when equation value is divided by it.</p>
+
+<p>In the case above the column chosen would be <script type="math/tex" id="MathJax-Element-801">x</script>, and the pivot value would be <script type="math/tex" id="MathJax-Element-802">1</script> in equation 3 as <script type="math/tex" id="MathJax-Element-803">\frac 5 1 < \frac 6 2 < \frac 0 2</script>.</p>
+
+<p>Divide the pivot row to get <script type="math/tex" id="MathJax-Element-804">1</script> in the select column. <br>
+Then add a multiple of the new pivot equation to each of the other equations.</p>
+
+<p>If the top row has no negative elements, stop. <br>
+If it still contains negative elements, find a new pivot from the new equations and repeat.</p>
+
+
+
+<h4 id="reading-the-solutions">Reading the solutions</h4>
+
+<p>Find the maximum by interpreting the tableau as described below: <br>
+- <script type="math/tex" id="MathJax-Element-818">P</script> equals the value in the top row <br>
+- Any non zero elements in the top row equal zero <br>
+- The other equations are then used to find the remaining variables</p>
 
 <h2 id="game-theory-for-zero-sum-games">Game theory for zero sum games</h2>
 
-
-
-<h3 id="zero-sum-games">Zero sum games</h3>
-
-<p>A zero sum game is such that for any move in the game, the gain for one party is exactly equal to the loss to the other.</p>
-
-
+<p><strong>Zero sum game</strong> A game such that the gain for one party is exactly equal to the loss for the other party</p>
 
 <h3 id="pay-off-matrix">Pay off matrix</h3>
 
-<p>A pay off matrix is a rectangular array of numbers representing the outcomes of each possible pair of decisions. The outcomes are the pay offs to the player whose choices are on the left side of the matrix.</p>
-
-
+<p>The pay off matrix represents the outcomes of each pair of decisions. <br>
+The outcomes are the pay offs to the player on the left side of the matrix, and as a result the losses for the player on the top of the matrix.</p>
 
 <h3 id="play-safe-strategies">Play safe strategies</h3>
 
 <p>A play safe strategy is to choose the option whose word outcome is as good as possible</p>
 
-<p>Method</p>
-
-<ul>
-<li>Add an extra column of the worst values from each row (The worst outcomes for the player on the left)</li>
-<li>Add an extra row of the worst values from each column (The worst outcomes for the player on the right)</li>
-</ul>
-
-
+<p>Method <br>
+ - Add an extra column of the worst values from each row (The worst outcomes for the player on the left) <br>
+ - Add an extra row of the worst values from each column (The worst outcomes for the player on the top)</p>
 
 <h4 id="stable-solutions">Stable solutions</h4>
 
-<p>If the maximum of the row minima is equal to the minimum of the column maxima then there is a stable solution. <br>
-If a game has a stable solution, then both players should adopt a play sage strategy and the pay off from these strategies is called the value of the game.</p>
+<p>If MAX(MIN(row)) = MIN(MAX(column)) there is a stable solution.</p>
 
-
+<p>If a game has a stable solution, then both players should adopt a play safe strategy and the pay off from these strategies is called the value of the game.</p>
 
 <h3 id="dominance">Dominance</h3>
 
@@ -291,43 +733,36 @@ A column of a pay off matrix can be ignored if each element is greater than or e
 
 
 
-<h3 id="mixed-strategies">Mixed strategies</h3>
+<h3 id="2-times-n-games"><script type="math/tex" id="MathJax-Element-232">2 \times n</script> games</h3>
 
-<p>You can only be certain that a play safe strategy is the best for a player when a game has a stable solution. <br>
-Rather than settling on a single option, a player has some likelihood of choosing any of the options.</p>
-
-<p>Example</p>
-
-<blockquote>
-  <p>Suppose A adopts a mixed strategy of sometimes choosing option 1, and sometimes choosing option 2. Let <script type="math/tex" id="MathJax-Element-8324">p</script> be the probability of choosing option 1; the probability of choosing option 2 is then <script type="math/tex" id="MathJax-Element-8325">1 - p</script></p>
-  
-  <p>We then consider each of the options which B may choose <br>
-   If A gains <script type="math/tex" id="MathJax-Element-8326">W</script> with probability <script type="math/tex" id="MathJax-Element-8327">p</script> and gains <script type="math/tex" id="MathJax-Element-8328">X</script> with probability <script type="math/tex" id="MathJax-Element-8329">1 - p</script> the expected payoff is <br>
-   <script type="math/tex" id="MathJax-Element-8330">Wp + X(1-p)</script></p>
-  
-  <p>If instead B chooses option 2 <br>
-     If A gains <script type="math/tex" id="MathJax-Element-8331">Y</script> with probability <script type="math/tex" id="MathJax-Element-8332">p</script> and <script type="math/tex" id="MathJax-Element-8333">Z</script> with probability <script type="math/tex" id="MathJax-Element-8334">1 - p</script> the expected payoff is <br>
-     <script type="math/tex" id="MathJax-Element-8335">Yp + Z(1-p)</script></p>
-  
-  <p>These two lines can be represented on a graph <br>
-   The intersection of these two lines provides the optimal solution</p>
-</blockquote>
-
-<h3 id="2-times-n-games"><script type="math/tex" id="MathJax-Element-8460">2 \times n</script> games</h3>
-
-<p>The method above can be extended to <script type="math/tex" id="MathJax-Element-8461">2\times n</script> games, which have <script type="math/tex" id="MathJax-Element-8462">2</script> rows and <script type="math/tex" id="MathJax-Element-8463">n</script> columns. <br>
-For each column there is a line on the graph. <br>
+<p>For each column there is a line on the graph. <br>
 The optimal value is at the lowest intersection on the graph</p>
 
-<p>To solve a <script type="math/tex" id="MathJax-Element-8464">2 \times n</script> game between A and B</p>
+<p>To solve a <script type="math/tex" id="MathJax-Element-233">2 \times n</script> game between A and B</p>
 
 <ol>
-<li>Assign probabilities of <script type="math/tex" id="MathJax-Element-8465">p</script> and <script type="math/tex" id="MathJax-Element-8466">1 - p</script> to the two options for A</li>
-<li>Plot A’s expected pay off under each of B’s options as lines on a graph of pay off against <script type="math/tex" id="MathJax-Element-8467">p</script></li>
+<li>Assign probabilities of <script type="math/tex" id="MathJax-Element-234">p</script> and <script type="math/tex" id="MathJax-Element-235">1 - p</script> to the two options for A</li>
+<li>Plot A’s expected pay off under each of B’s options as lines on a graph of pay off against <script type="math/tex" id="MathJax-Element-236">p</script></li>
 <li>Shade the region which is below every line</li>
-<li>Find the value of <script type="math/tex" id="MathJax-Element-8468">p</script> at the highest point of the shaded region</li>
-<li>Use this value of <script type="math/tex" id="MathJax-Element-8469">p</script> to find the value, <script type="math/tex" id="MathJax-Element-8470">V</script>, of the game</li>
-<li>Assign probability <script type="math/tex" id="MathJax-Element-8471">q</script> to one of those options for B which determine the highest point of the shaded region</li>
-<li>Find the value of <script type="math/tex" id="MathJax-Element-8472">q</script> which gives B an expected pay off of <script type="math/tex" id="MathJax-Element-8473">-V</script> under either of A’s options</li>
+<li>Find the value of <script type="math/tex" id="MathJax-Element-237">p</script> at the highest point of the shaded region</li>
+<li>Use this value of <script type="math/tex" id="MathJax-Element-238">p</script> to find the value, <script type="math/tex" id="MathJax-Element-239">V</script>, of the game</li>
+<li>Assign probability <script type="math/tex" id="MathJax-Element-240">q</script> to one of those options for B which determine the highest point of the shaded region</li>
+<li>Find the value of <script type="math/tex" id="MathJax-Element-241">q</script> which gives B an expected pay off of <script type="math/tex" id="MathJax-Element-242">-V</script> under either of A’s options</li>
+</ol>
+
+
+
+<h3 id="finding-the-mixed-strategy-with-simplex">Finding the mixed strategy with simplex</h3>
+
+<p>If there are more than two rows, the mixed strategy can be found with simplex.</p>
+
+<ol>
+<li>Let the probabilities of each of the options for A be <script type="math/tex" id="MathJax-Element-425">p_1, p_2, p_3, ...</script></li>
+<li>If necessary, add a constant value <script type="math/tex" id="MathJax-Element-426">k</script> to eliminate any negative pay-offs from the matrix</li>
+<li>The objective is then to maximise <script type="math/tex" id="MathJax-Element-427">V-k</script> subject to the following constraints <br>
+<ol><li><script type="math/tex" id="MathJax-Element-428">V \leq \text{expected pay off from 1}</script></li>
+<li><script type="math/tex" id="MathJax-Element-429">V \leq \text{expected pay off from 2}</script> …</li>
+<li><script type="math/tex" id="MathJax-Element-430">p_1 + p_2 + p_3 + .. \leq 1</script> </li>
+<li><script type="math/tex" id="MathJax-Element-431">p_1, p_2, p_3, ... \geq 0</script></li></ol></li>
 </ol></div></body>
 </html>
